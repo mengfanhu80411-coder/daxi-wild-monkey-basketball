@@ -1,0 +1,266 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>大溪國中野猴籃球隊｜公告與行事曆</title>
+  <style>
+    :root{
+      --bg:#0b1220;
+      --card:#111a2e;
+      --text:#e9eefc;
+      --muted:#a9b4d6;
+      --brand:#5aa7ff;
+      --border:rgba(255,255,255,.08);
+      --chip:rgba(90,167,255,.12);
+      --chipBorder:rgba(90,167,255,.30);
+      --warnBg:rgba(255,204,102,.10);
+      --warnBd:rgba(255,204,102,.25);
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family: ui-sans-serif, system-ui, -apple-system, "Noto Sans TC", "PingFang TC", "Microsoft JhengHei", sans-serif;
+      background: radial-gradient(1200px 600px at 20% -10%, rgba(90,167,255,.25), transparent 55%),
+                  radial-gradient(900px 500px at 90% 0%, rgba(57,217,138,.18), transparent 55%),
+                  var(--bg);
+      color:var(--text);
+    }
+    .wrap{max-width:1100px;margin:0 auto;padding:22px}
+    header{
+      display:flex; gap:14px; align-items:center; justify-content:space-between;
+      padding:16px 16px; border:1px solid var(--border); border-radius:16px;
+      background: rgba(17,26,46,.75); backdrop-filter: blur(10px);
+    }
+    .brand{display:flex; gap:12px; align-items:center}
+    .logo{
+      width:44px;height:44px;border-radius:12px;
+      background: linear-gradient(135deg, rgba(90,167,255,.95), rgba(57,217,138,.75));
+      display:grid;place-items:center;font-weight:900;
+    }
+    .title h1{margin:0;font-size:18px}
+    .title p{margin:4px 0 0; color:var(--muted); font-size:13px}
+    .actions{display:flex;gap:10px;flex-wrap:wrap}
+    .btn{
+      border:1px solid var(--border);
+      background:transparent;color:var(--text);
+      padding:10px 12px;border-radius:12px;
+      cursor:pointer;font-weight:700;
+    }
+    .btn.primary{background: rgba(90,167,255,.18); border-color: rgba(90,167,255,.35)}
+    .grid{margin-top:16px; display:grid; grid-template-columns: 1.2fr .8fr; gap:16px}
+    @media (max-width: 900px){ .grid{grid-template-columns:1fr} }
+    .card{
+      border:1px solid var(--border);
+      border-radius:16px;
+      background: rgba(17,26,46,.75);
+      backdrop-filter: blur(10px);
+      overflow:hidden;
+    }
+    .card h2{
+      margin:0; padding:14px 16px;
+      font-size:15px; border-bottom:1px solid var(--border);
+      display:flex; align-items:center; justify-content:space-between;
+    }
+    .content{padding:14px 16px}
+    .muted{color:var(--muted)}
+    .pinned{
+      padding:12px 12px; border-radius:14px;
+      background: var(--warnBg);
+      border:1px solid var(--warnBd);
+    }
+    .chips{display:flex;gap:8px;flex-wrap:wrap}
+    .chip{
+      font-size:12px;
+      padding:6px 10px;
+      border-radius:999px;
+      border:1px solid var(--chipBorder);
+      background: var(--chip);
+      color:var(--text);
+      cursor:pointer;
+      user-select:none;
+    }
+    .chip.off{
+      background: rgba(255,255,255,.03);
+      border-color: var(--border);
+      color: var(--muted);
+    }
+    .list{display:flex;flex-direction:column;gap:10px}
+    .item{
+      padding:12px 12px;
+      border-radius:14px;
+      border:1px solid var(--border);
+      background: rgba(255,255,255,.03);
+    }
+    .row{display:flex; gap:10px; align-items:flex-start; justify-content:space-between}
+    .tag{
+      font-size:12px;padding:4px 8px;border-radius:999px;
+      border:1px solid var(--border);
+      background: rgba(255,255,255,.04);
+      color: var(--text);
+      white-space:nowrap;
+    }
+    .meta{margin-top:6px;color:var(--muted);font-size:12px;display:flex;gap:10px;flex-wrap:wrap}
+    details{
+      border:1px solid var(--border);
+      border-radius:14px;
+      padding:10px 12px;
+      background: rgba(255,255,255,.03);
+    }
+    summary{cursor:pointer;font-weight:800}
+    .line{display:flex;justify-content:space-between;gap:12px;margin-top:8px;color:var(--muted);font-size:13px}
+    footer{margin:16px 0 6px; text-align:center; color:var(--muted); font-size:12px}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <div class="brand">
+        <div class="logo">🏀</div>
+        <div class="title">
+          <h1 id="teamName">球隊公告與行事曆</h1>
+          <p id="subTitle">載入日期中…</p>
+        </div>
+      </div>
+      <div class="actions">
+        <button class="btn primary" onclick="scrollToId('annSection')">看公告</button>
+        <button class="btn" onclick="scrollToId('calSection')">看行程</button>
+      </div>
+    </header>
+
+    <div class="grid">
+      <section class="card" id="annSection">
+        <h2>📢 公告 <span class="muted" id="annCount"></span></h2>
+        <div class="content">
+          <div class="pinned" id="pinnedBox"></div>
+          <div style="height:12px"></div>
+          <div class="chips" id="chipBar"></div>
+          <div style="height:12px"></div>
+          <div class="list" id="annList"></div>
+        </div>
+      </section>
+
+      <aside class="card" id="calSection">
+        <h2>📅 近期行程 <span class="muted" id="eventHint"></span></h2>
+        <div class="content">
+          <div class="list" id="eventList"></div>
+        </div>
+      </aside>
+    </div>
+
+    <footer>教練更新方式：打開 index.html → 找到「DATA」區塊 → 改文字 → 存檔</footer>
+  </div>
+
+  <script>
+    const scrollToId = (id) => document.getElementById(id).scrollIntoView({behavior:"smooth", block:"start"});
+
+    // ====== DATA（教練只要改這裡）======
+    const DATA = {
+      teamName: "大溪國中野猴籃球隊｜公告與行事曆",
+      pinned: "置頂：本週日 08:30 集合，09:00 開始訓練。請自備深色/淺色球衣各一件。",
+      announcements: [
+        { date:"2026-07-05", tag:"比賽", title:"下週友誼賽名單確認", detail:"請在群組回覆是否出席，未回覆視同不出賽。" },
+        { date:"2026-07-04", tag:"收費", title:"7 月場地費繳交提醒", detail:"每人 NT$XXX，請於 7/10 前完成轉帳或交現金。" },
+        { date:"2026-07-03", tag:"裝備", title:"請攜帶護具與水壺", detail:"天氣熱，請自行補水，避免抽筋。" }
+      ],
+      events: [
+        { date:"2026-07-07", title:"自主練投（自由參加）", time:"20:00–21:30", place:"XX公園球場", note:"以投籃與體能為主" },
+        { date:"2026-07-06", title:"訓練（全員）", time:"09:00–11:00", place:"XX國小體育館", note:"暖身＋戰術跑位" },
+        { date:"2026-07-12", title:"友誼賽", time:"14:00–16:00", place:"YY體育館", note:"集合 13:15" }
+      ]
+    };
+    // ====== /DATA ======
+
+    const now = new Date();
+    const pad = (n)=> String(n).padStart(2,'0');
+    document.getElementById("teamName").textContent = DATA.teamName;
+    document.getElementById("subTitle").textContent = `今天：${now.getFullYear()}/${pad(now.getMonth()+1)}/${pad(now.getDate())}`;
+
+    document.getElementById("pinnedBox").innerHTML = `<strong>📌 ${DATA.pinned}</strong>`;
+
+    const tags = Array.from(new Set(DATA.announcements.map(a => a.tag)));
+    let activeTag = "全部";
+    const chipBar = document.getElementById("chipBar");
+    const makeChip = (t) => {
+      const el = document.createElement("div");
+      el.className = "chip";
+      el.textContent = t;
+      el.onclick = () => { activeTag = t; renderAnnouncements(); renderChips(); };
+      return el;
+    };
+    const renderChips = () => {
+      chipBar.innerHTML = "";
+      const all = ["全部", ...tags];
+      all.forEach(t => {
+        const c = makeChip(t);
+        if (t !== activeTag) c.classList.add("off");
+        chipBar.appendChild(c);
+      });
+    };
+
+    const annList = document.getElementById("annList");
+    const renderAnnouncements = () => {
+      const items = DATA.announcements
+        .slice()
+        .sort((a,b)=> (a.date < b.date ? 1 : -1))
+        .filter(a => activeTag === "全部" ? true : a.tag === activeTag);
+
+      document.getElementById("annCount").textContent = `（${items.length} 則）`;
+
+      annList.innerHTML = "";
+      items.forEach(a => {
+        const el = document.createElement("div");
+        el.className = "item";
+        el.innerHTML = `
+          <div class="row">
+            <div style="font-weight:800">${a.title}</div>
+            <div class="tag">${a.tag}</div>
+          </div>
+          <div class="meta">
+            <span>🗓️ ${a.date}</span>
+          </div>
+          ${a.detail ? `<div style="margin-top:8px" class="muted">${a.detail}</div>` : ``}
+        `;
+        annList.appendChild(el);
+      });
+    };
+
+    const eventList = document.getElementById("eventList");
+    const renderEvents = () => {
+      const start = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+      const end = new Date(start); end.setDate(end.getDate() + 14);
+
+      const items = DATA.events
+        .slice()
+        .filter(e => {
+          const d = new Date(e.date + "T00:00:00");
+          return d >= start && d <= end;
+        })
+        .sort((a,b)=> (a.date > b.date ? 1 : -1));
+
+      document.getElementById("eventHint").textContent = "（未來 14 天）";
+
+      eventList.innerHTML = "";
+      if(items.length === 0){
+        eventList.innerHTML = `<div class="muted">近期沒有排定行程</div>`;
+        return;
+      }
+      items.forEach(e => {
+        const wrap = document.createElement("details");
+        wrap.open = true;
+        wrap.innerHTML = `
+          <summary>${e.date}｜${e.title}</summary>
+          <div class="line"><span>時間</span><span>${e.time || "-"}</span></div>
+          <div class="line"><span>地點</span><span>${e.place || "-"}</span></div>
+          ${e.note ? `<div class="line"><span>備註</span><span>${e.note}</span></div>` : ``}
+        `;
+        eventList.appendChild(wrap);
+      });
+    };
+
+    renderChips();
+    renderAnnouncements();
+    renderEvents();
+  </script>
+</body>
+</html>
